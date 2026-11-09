@@ -191,14 +191,20 @@ static void traceRightStickTransmit(uint32_t packetCount, JoyConSide side, const
 
 static void emitJSONLine(const std::string& line) {
     if (g_eventPipe >= 0) {
-        // A single bounded write keeps each FIFO frame atomic. Under
-        // backpressure, discard the frame instead of blocking BLE callbacks.
-        if (line.size() >= PIPE_BUF) return;
-        std::string frame = line + "\n";
+        // macOS only guarantees atomic pipe writes up to 512 bytes.
+        // A full controller snapshot is larger, and this pipe has one writer.
+        // If backpressure cuts a write short, resynchronize at the next line.
+        static bool needsSeparator = false;
+        if (line.size() > 4096) return;
+        std::string frame = needsSeparator ? "\n" + line : line;
+        frame += '\n';
         ssize_t result;
         do {
             result = write(g_eventPipe, frame.data(), frame.size());
         } while (result == -1 && errno == EINTR);
+        if (result > 0) {
+            needsSeparator = static_cast<size_t>(result) < frame.size();
+        }
     } else {
         std::cout << line << std::endl;
     }

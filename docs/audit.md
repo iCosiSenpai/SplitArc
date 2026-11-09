@@ -1,4 +1,4 @@
-# Audit di SplitArc 0.2.0
+# Audit di SplitArc 0.2.1
 
 9 novembre 2026 · Apple silicon · Xcode 27.2 · macOS 27.2
 
@@ -20,7 +20,7 @@ Il pacchetto di anteprima usa Developer ID Application di Alessio Cosi. L'app e 
 ## Backend e DriverKit
 
 - **Avvio dell'agente.** Eliminata la ricerca di eseguibili accanto all'app o nella cartella corrente. L'app avvia esclusivamente l'agente incorporato e tiene separati gli stati di avvio, funzionamento e arresto. Il watcher del processo chiude l'agente se l'app termina.
-- **Canali locali.** Ogni avvio crea una cartella privata, con permessi 0700, e una FIFO 0600. L'agente scrive frame atomici senza bloccare il ciclo BLE quando il lettore rallenta. L'app ricompone le righe prima della decodifica UTF-8. Il lettore dei comandi aspetta la fine della riga e limita i byte letti a ogni passaggio.
+- **Canali locali.** Ogni avvio crea una cartella privata, con permessi 0700, e una FIFO 0600. L'agente scrive senza bloccare il ciclo BLE quando il lettore rallenta. La versione 0.2.1 corregge lo scarto degli aggiornamenti del controller più lunghi di 512 byte, con recupero al successivo delimitatore dopo una scrittura parziale. L'app ricompone le righe prima della decodifica UTF-8. Il lettore dei comandi aspetta la fine della riga e limita i byte letti a ogni passaggio.
 - **Riconnessione e input.** La disconnessione azzera pulsanti, stick e grilletto del lato perso e rilascia i pulsanti del puntatore quando quel lato lo controllava. L'agente aggiorna la cache dei report solo dopo una consegna riuscita. L'interfaccia scarta campioni pendenti del lato disconnesso e consente allo stato di progredire alla riconnessione.
 - **Superficie del driver.** Rivisti il controllo dei selettori, le dimensioni delle strutture e i limiti delle copie nei descrittori di memoria. Conservati gli identificatori del profilo compatibile con DualSense per evitare regressioni nei client che lo riconoscono per VID/PID.
 - **Limiti residui.** In caso di saturazione della FIFO i campioni dell'interfaccia possono essere scartati. Un arresto anomalo può lasciare una piccola cartella di sessione temporanea. La suite di test non sostituisce il collaudo dei report HID e dei gesti con giochi e controller reali.
