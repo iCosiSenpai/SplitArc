@@ -21,9 +21,9 @@ Use **SDL compatibility mode** if a game sees duplicate gamepads. The virtual po
 
 ## Distribution
 
-Request DriverKit authorization for `dev.icosisenpai.splitarc.driver` and user-client access for `dev.icosisenpai.splitarc.agent`. Configure Developer ID provisioning profiles for the driver, agent and host app (`dev.icosisenpai.splitarc`) in the Apple Developer account. [Apple System Extensions and DriverKit](https://developer.apple.com/system-extensions/)
+Follow the [DriverKit authorization and gamepad test guide](docs/driverkit-release.md) for the exact capabilities, bundle identifiers and test steps.
 
-Set `CODE_SIGN_IDENTITY` to a Developer ID Application identity, `NOTARY_PROFILE` to an existing notarytool Keychain profile, and `APP_PROVISIONING_PROFILE`, `DEXT_PROVISIONING_PROFILE` and `AGENT_PROVISIONING_PROFILE` to the downloaded profiles. Run `scripts/notarize.sh /absolute/path/SplitArc.zip`. The script archives with Xcode, signs each component from the inside out, submits the ZIP, staples Apple's ticket and checks Gatekeeper. The `--preview` option is a Bluetooth diagnostics build while waiting for the profiles. The preview disables driver activation.
+Set `CODE_SIGN_IDENTITY` to the Developer ID Application identity and `NOTARY_PROFILE` to the notarytool Keychain profile. Run `scripts/notarize.sh /absolute/path/SplitArc.zip`. The release script validates all three profiles, archives with Xcode, signs each component, and verifies the notarization ticket and Gatekeeper. Profiles can be installed in Xcode or supplied via `SPLITARC_PROFILE_DIR`. The `--preview` build disables driver activation and supports Bluetooth diagnostics.
 
 ## Tests
 

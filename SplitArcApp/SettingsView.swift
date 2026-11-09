@@ -18,6 +18,8 @@ struct SettingsView: View {
             }
             section("Virtual input", icon: "puzzlepiece.extension") {
                 if DaemonBridge.canEnableDriver {
+                    ArcBadge(title: bridge.virtualGamepadReady ? "Virtual gamepad online" : "Virtual gamepad offline",
+                             symbol: bridge.virtualGamepadReady ? "checkmark.circle" : "exclamationmark.circle")
                     Toggle("SDL compatibility mode", isOn: $sdlOnlyMode)
                         .onChange(of: sdlOnlyMode) { _, enabled in bridge.setSDLOnlyMode(enabled) }
                     Text("Use a single DualSense-compatible gamepad with SDL and cloud gaming clients.")

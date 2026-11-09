@@ -386,16 +386,16 @@ void toggleMouseMode() {
 }
 
 static void applySDLOnlyMode(bool enabled) {
-    g_sdlOnlyMode = enabled;
-
     if (!g_driverClient || !g_driverClient.isRunning) {
+        g_sdlOnlyMode = enabled;
         emitDaemonEvent("sdlOnlyMode", enabled ? "pending=1 driver=missing" : "pending=0 driver=missing");
         return;
     }
 
     BOOL ok = [g_driverClient setSDLOnlyMode:enabled ? YES : NO];
-    if (ok && enabled && g_haveLastGamepadReport) {
-        [g_driverClient postGamepadReport:g_lastGamepadReport];
+    if (ok) {
+        g_sdlOnlyMode = enabled;
+        if (g_haveLastGamepadReport) [g_driverClient postGamepadReport:g_lastGamepadReport];
     }
 
     emitDaemonEvent("sdlOnlyMode", ok
@@ -803,7 +803,20 @@ static void sendSDLOnlyKeepalive() {
     [g_driverClient postGamepadReport:g_lastGamepadReport];
 }
 
-static void startRumblePolling() {
+static bool connectDriver() {
+    if (![g_driverClient startWithSDLOnlyMode:g_sdlOnlyMode]) return false;
+    // DriverKit may start the user client during creation. Confirm the
+    // requested mode after IOServiceOpen has returned.
+    if (![g_driverClient setSDLOnlyMode:g_sdlOnlyMode]) {
+        [g_driverClient stop];
+        return false;
+    }
+    if (g_haveLastGamepadReport) [g_driverClient postGamepadReport:g_lastGamepadReport];
+    emitDaemonEvent("driverReady", "Connected to the virtual gamepad driver.");
+    return true;
+}
+
+static void startRumblePolling(bool retryDriver) {
     if (g_rumblePollTimer) {
         return;
     }
@@ -814,7 +827,17 @@ static void startRumblePolling() {
                               dispatch_time(DISPATCH_TIME_NOW, 16666667ULL),
                               16666667ULL,
                               4000000ULL);
+    __block int remainingRetries = retryDriver ? 8 : 0;
+    __block NSTimeInterval retryAt = NSProcessInfo.processInfo.systemUptime + 1;
     dispatch_source_set_event_handler(g_rumblePollTimer, ^{
+        if (remainingRetries > 0 && !g_driverClient.isRunning) {
+            const NSTimeInterval now = NSProcessInfo.processInfo.systemUptime;
+            if (now >= retryAt) {
+                retryAt = now + 1;
+                remainingRetries--;
+                if (connectDriver()) remainingRetries = 0;
+            }
+        }
         pollRumbleReport();
         sendSDLOnlyKeepalive();
     });
@@ -1371,16 +1394,17 @@ int main(int argc, const char * argv[]) {
         NSString *localMAC = [pairingManager getLocalBluetoothAddress];
         if (localMAC) std::cout << "Local Bluetooth MAC: " << [localMAC UTF8String] << "\n";
         
-        // Initialize DriverKit client
         g_driverClient = [[DriverKitClient alloc] init];
-        if ([g_driverClient startWithSDLOnlyMode:g_sdlOnlyMode ? YES : NO]) {
-            std::cout << "✓ Connected to DriverKit Extension\n";
-            emitDaemonEvent("driverReady", "Connected to VirtualJoyConDriver");
-            applySDLOnlyMode(g_sdlOnlyMode);
-        } else {
-            std::cout << "✗ Failed to connect to DriverKit Extension\n";
-            emitDaemonEvent("driverMissing", "VirtualJoyConDriver not loaded; HID mouse output unavailable");
+        const bool driverConnected = connectDriver();
+        if (!driverConnected) {
+            emitDaemonEvent("driverMissing", "Bluetooth works, but games cannot see a virtual gamepad.");
         }
+        // Activation and publication are asynchronous. Try again after
+        // opening Bluetooth when a provisioned agent starts ahead of IOKit.
+        NSString *profile = [NSBundle.mainBundle.bundlePath
+            stringByAppendingPathComponent:@"Contents/embedded.provisionprofile"];
+        const bool retryDriver = !driverConnected &&
+            [NSFileManager.defaultManager fileExistsAtPath:profile];
         g_mouseEmitter = [[MouseEmitter alloc] initWithDriverClient:g_driverClient];
 
         // Now that g_mouseEmitter + g_bleManager exist, hook up the GUI
@@ -1398,7 +1422,7 @@ int main(int argc, const char * argv[]) {
         [bleManager setStatusCallback:onJoyConStatus];
         [bleManager setTelemetryCallback:onJoyConTelemetry];
         [bleManager setNFCCallback:onJoyConNFCTag];
-        startRumblePolling();
+        startRumblePolling(retryDriver);
         
         std::cout << "Waiting for Bluetooth to power on...\n";
         CFRunLoopRun();

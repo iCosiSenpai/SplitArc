@@ -466,9 +466,8 @@ class DaemonBridge: ObservableObject {
 
     var isDaemonRunning: Bool { agentPhase == .running }
     var isAgentTransitioning: Bool { agentPhase == .starting || agentPhase == .stopping }
-    // Kept for source-compat with older views. Never mutated from the
-    // packet firehose now; only on driver-install result.
-    @Published var driverInstallStatus: String = ""
+    @Published private(set) var driverInstallStatus = ""
+    @Published private(set) var virtualGamepadReady = false
     @Published var findingLeftJoyCon = false
     @Published var findingRightJoyCon = false
 
@@ -605,6 +604,7 @@ class DaemonBridge: ObservableObject {
         daemonControlPath = nil
         stopDaemonStream()
         agentPhase = .stopped
+        virtualGamepadReady = false
         stopRequested = false
         shouldRestartAfterTermination = false
         findingLeftJoyCon = false
@@ -707,6 +707,10 @@ class DaemonBridge: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 guard let self, generation == self.daemonGeneration, !self.stopRequested else { return }
                 switch status {
+                case "driverReady":
+                    self.virtualGamepadReady = true
+                case "driverMissing":
+                    self.virtualGamepadReady = false
                 case "findJoyCon":
                     self.applyFindStatus(detail)
                 case "controlFile":

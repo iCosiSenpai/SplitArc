@@ -19,15 +19,22 @@ if [[ -e "$output" ]]; then
     exit 1
 fi
 
-if ! $preview; then
-    : "${APP_PROVISIONING_PROFILE:?Set the Developer ID system-extension host profile path}"
-    : "${DEXT_PROVISIONING_PROFILE:?Set the Developer ID DriverKit profile path}"
-    : "${AGENT_PROVISIONING_PROFILE:?Set the Developer ID driver user-client profile path}"
-fi
-
 mkdir -p build
 staging="$(mktemp -d "$PWD/build/notary.XXXXXX")"
 trap 'rm -rf "$staging"' EXIT
+
+if ! $preview; then
+    profile_args=(--identity "$CODE_SIGN_IDENTITY" --manifest "$staging/profiles.plist")
+    if [[ -n ${APP_PROVISIONING_PROFILE:-} ]]; then profile_args+=(--app "$APP_PROVISIONING_PROFILE"); fi
+    if [[ -n ${AGENT_PROVISIONING_PROFILE:-} ]]; then profile_args+=(--agent "$AGENT_PROVISIONING_PROFILE"); fi
+    if [[ -n ${DEXT_PROVISIONING_PROFILE:-} ]]; then profile_args+=(--driver "$DEXT_PROVISIONING_PROFILE"); fi
+    if [[ -n ${SPLITARC_PROFILE_DIR:-} ]]; then profile_args+=(--directory "$SPLITARC_PROFILE_DIR"); fi
+    python3 scripts/check-profiles.py "${profile_args[@]}"
+    APP_PROVISIONING_PROFILE="$(plutil -extract app raw "$staging/profiles.plist")"
+    AGENT_PROVISIONING_PROFILE="$(plutil -extract agent raw "$staging/profiles.plist")"
+    DEXT_PROVISIONING_PROFILE="$(plutil -extract driver raw "$staging/profiles.plist")"
+fi
+
 xcodebuild -project SplitArc.xcodeproj -scheme SplitArc -configuration Release \
     -destination 'generic/platform=macOS' -derivedDataPath build/xcode \
     -archivePath "$staging/SplitArc.xcarchive" CODE_SIGNING_ALLOWED=NO archive

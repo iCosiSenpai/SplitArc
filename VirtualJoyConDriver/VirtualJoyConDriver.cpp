@@ -1358,31 +1358,16 @@ static kern_return_t ensureKeyboardDevice(VirtualJoyConUserClient * self) {
 }
 
 static kern_return_t ensureAllHIDDevices(VirtualJoyConUserClient * self) {
-    if (!self || !self->ivars) {
-        return kIOReturnBadArgument;
-    }
-    if (self->ivars->sdlOnlyMode) {
-        kern_return_t kr = ensureDualSenseDevice(self);
-        if (kr != kIOReturnSuccess) {
-            return kr;
-        }
-        kr = ensureMouseDevice(self);
-        if (kr != kIOReturnSuccess) return kr;
-        return ensureKeyboardDevice(self);
-    }
+    if (!self || !self->ivars) return kIOReturnBadArgument;
 
-    kern_return_t kr = ensureGamepadDevice(self);
-    if (kr != kIOReturnSuccess) {
-        return kr;
-    }
-    kr = ensureDualSenseDevice(self);
-    if (kr != kIOReturnSuccess) {
-        os_log(OS_LOG_DEFAULT,
-               "VirtualJoyConUserClient: DualSense device unavailable 0x%x", kr);
-    }
-    kr = ensureMouseDevice(self);
-    if (kr != kIOReturnSuccess) return kr;
-    return ensureKeyboardDevice(self);
+    kern_return_t result = ensureDualSenseDevice(self);
+    if (result != kIOReturnSuccess) return result;
+    result = ensureMouseDevice(self);
+    if (result != kIOReturnSuccess) return result;
+    result = ensureKeyboardDevice(self);
+    if (result != kIOReturnSuccess) return result;
+
+    return self->ivars->sdlOnlyMode ? kIOReturnSuccess : ensureGamepadDevice(self);
 }
 
 static kern_return_t PostGamepadReport(OSObject * target, void * reference, IOUserClientMethodArguments * arguments) {
@@ -1530,36 +1515,17 @@ static kern_return_t SetHIDMode(OSObject * target, void * reference, IOUserClien
     JoyConHIDModeData mode = {};
     memcpy(&mode, bytes, sizeof(mode));
     const bool sdlOnly = mode.sdlOnly != 0;
-    client->ivars->sdlOnlyMode = sdlOnly;
+    if (sdlOnly == client->ivars->sdlOnlyMode) return kIOReturnSuccess;
 
-    kern_return_t kr = ensureDualSenseDevice(client);
-    if (kr != kIOReturnSuccess) {
-        return kr;
-    }
-
+    // Start already created the devices shared by both modes. Changing mode
+    // only adds or removes the generic gamepad. Commit after creation succeeds.
     if (sdlOnly) {
         releaseGamepadDevice(client);
-        kr = ensureMouseDevice(client);
-        if (kr != kIOReturnSuccess) {
-            return kr;
-        }
-        kr = ensureKeyboardDevice(client);
-        if (kr != kIOReturnSuccess) return kr;
-        os_log(OS_LOG_DEFAULT, "VirtualJoyConUserClient: HID mode set to SDL-only");
-        return kIOReturnSuccess;
+    } else {
+        kern_return_t result = ensureGamepadDevice(client);
+        if (result != kIOReturnSuccess) return result;
     }
-
-    kr = ensureGamepadDevice(client);
-    if (kr != kIOReturnSuccess) {
-        return kr;
-    }
-    kr = ensureMouseDevice(client);
-    if (kr != kIOReturnSuccess) {
-        return kr;
-    }
-    kr = ensureKeyboardDevice(client);
-    if (kr != kIOReturnSuccess) return kr;
-    os_log(OS_LOG_DEFAULT, "VirtualJoyConUserClient: HID mode set to standard");
+    client->ivars->sdlOnlyMode = sdlOnly;
     return kIOReturnSuccess;
 }
 

@@ -30,12 +30,13 @@ struct ControllersView: View {
                     bay(right: true)
                 }
             }
-            if !DaemonBridge.canEnableDriver {
-                Label("Bluetooth preview · virtual input requires a provisioned DriverKit build.", systemImage: "puzzlepiece.extension")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
+            Label(bridge.virtualGamepadReady ? "Virtual gamepad online" :
+                    DaemonBridge.canEnableDriver ? "Virtual gamepad offline · enable the driver in Settings." :
+                    "Bluetooth preview · game input is disabled.",
+                  systemImage: bridge.virtualGamepadReady ? "gamecontroller.fill" : "puzzlepiece.extension")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
