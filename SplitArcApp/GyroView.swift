@@ -53,10 +53,10 @@ struct GyroView: View {
     @State private var invertRightAxes: Bool = false
 
     private var leftController: ControllerState? {
-        controllerStore.controllers.first { $0.side == "left" }
+        controllerStore.controllers.first { $0.side == "left" && $0.isConnected }
     }
     private var rightController: ControllerState? {
-        controllerStore.controllers.first { $0.side == "right" }
+        controllerStore.controllers.first { $0.side == "right" && $0.isConnected }
     }
 
     private var anyController: ControllerState? {
@@ -113,35 +113,25 @@ struct GyroView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                header
-
-                Divider()
-
-                if anyController != nil {
-                    orientationSection
-                    Divider()
-                    sourceAndBars
-                    if showRawValues {
-                        Divider()
-                        rawValuesSection
-                    }
-                } else {
-                    emptyState
-                }
-
-                Spacer()
+        ArcPage {
+            ArcHeading(index: "04 / IMU", title: "Motion Lab",
+                       summary: "Inspect orientation, rotation rate and acceleration from either half of the pair.")
+            header.padding(14).arcPanel()
+            if anyController != nil {
+                orientationSection.padding(16).arcPanel()
+                sourceAndBars.padding(16).arcPanel()
+                if showRawValues { rawValuesSection.padding(16).arcPanel() }
+            } else {
+                emptyState
+                    .frame(maxWidth: .infinity)
+                    .arcPanel()
             }
-            .padding()
         }
     }
 
     private var header: some View {
         HStack(alignment: .center, spacing: 16) {
-            Text("Motion Sensors")
-                .font(.title)
-                .fontWeight(.bold)
+            ArcKicker(title: "Display options")
             Spacer()
             Toggle("Invert Right Axes", isOn: $invertRightAxes)
                 .help("Flip the right Joy-Con's Y and Z axes. Only enable if the right side tilts opposite the left when both are held the same way.")
@@ -166,12 +156,14 @@ struct GyroView: View {
 
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(NSColor.controlBackgroundColor))
+                    .fill(ArcTheme.ink)
+                    .overlay { ArcGrid().opacity(0.4).clipShape(.rect(cornerRadius: 12)) }
                     .frame(height: 300)
 
                 JoyConOrientationView(sample: fusedSample,
                                       sourceLabel: gyroSource.rawValue)
                     .frame(height: 280)
+                    .environment(\.colorScheme, .dark)
             }
         }
     }

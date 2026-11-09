@@ -1869,8 +1869,12 @@ waitsForProtocolResponse:NO
         return;
     }
 
-    NSString *deviceName = peripheral.name ?: advertisementData[CBAdvertisementDataLocalNameKey] ?: @"Unknown";
-    NSNumber *explicitSide = [self explicitSideForPeripheralName:deviceName];
+    NSString *advertisedName = advertisementData[CBAdvertisementDataLocalNameKey];
+    NSString *deviceName = advertisedName ?: peripheral.name ?: @"Unknown";
+    // The current advertisement can identify the side even when the
+    // peripheral's cached name is still generic.
+    NSNumber *explicitSide = [self explicitSideForPeripheralName:advertisedName]
+        ?: [self explicitSideForPeripheralName:peripheral.name];
     BOOL sideWasInferred = (explicitSide == nil);
     JoyConSide side = explicitSide != nil ? (JoyConSide)explicitSide.integerValue : [self missingOrDefaultSide];
     NSData *manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey];

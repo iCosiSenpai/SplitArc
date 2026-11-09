@@ -11,15 +11,15 @@ struct GamepadView: View {
     @State private var captureNeedsRelease = false
 
     private var leftController: ControllerState? {
-        controllerStore.controllers.first { $0.side == "left" }
+        controllerStore.controllers.first { $0.side == "left" && $0.isConnected }
     }
 
     private var rightController: ControllerState? {
-        controllerStore.controllers.first { $0.side == "right" }
+        controllerStore.controllers.first { $0.side == "right" && $0.isConnected }
     }
 
     private var primaryController: ControllerState? {
-        leftController ?? rightController ?? controllerStore.controllers.first
+        leftController ?? rightController
     }
 
     private var leftButtons: UInt32 {
@@ -31,20 +31,17 @@ struct GamepadView: View {
     }
 
     var body: some View {
-        Group {
+        ArcPage {
+            ArcHeading(index: "02 / Live input", title: "Input Lab",
+                       summary: "Check the physical controls, locate either half, and remap the rail buttons.")
             if primaryController == nil {
                 emptyState
             } else {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 18) {
-                        controllerSurface
-                        findControls
-                        shoulderSection
-                        railButtons
-                        systemButtons
-                    }
-                    .padding(20)
-                }
+                controllerSurface
+                shoulderSection
+                findControls
+                railButtons
+                systemButtons
             }
         }
         .transaction { transaction in
@@ -63,76 +60,72 @@ struct GamepadView: View {
     }
 
     private var emptyState: some View {
-        VStack(spacing: 14) {
-            Image(systemName: "gamecontroller")
-                .font(.system(size: 48, weight: .medium))
-                .foregroundColor(.secondary)
-            Text("No Controller Connected")
-                .font(.title3)
-                .fontWeight(.semibold)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        ContentUnavailableView("Waiting for input", systemImage: "gamecontroller",
+                               description: Text("Connect a Joy-Con 2 in Pairing Deck to begin."))
+            .frame(maxWidth: .infinity, minHeight: 320)
+            .arcPanel()
     }
 
     private var controllerSurface: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("Combined Output")
-                    .font(.headline)
+                ArcKicker(title: "Physical controls")
                 Spacer()
-                Text(connectionSummary)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                ArcBadge(title: connectionSummary, symbol: "dot.radiowaves.left.and.right")
             }
-
-            ZStack {
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.secondary.opacity(0.35), lineWidth: 1)
-
-                HStack(alignment: .center, spacing: 42) {
-                    VStack(spacing: 18) {
-                        dpad
-                        StickIndicator(
-                            title: "Left Stick",
-                            x: leftController?.leftStickX ?? primaryController?.leftStickX ?? 0,
-                            y: leftController?.leftStickY ?? primaryController?.leftStickY ?? 0,
-                            color: .blue
-                        )
-                    }
-
-                    Spacer()
-
-                    VStack(spacing: 18) {
-                        faceButtons
-                        StickIndicator(
-                            title: "Right Stick",
-                            x: rightController?.rightStickX ?? primaryController?.rightStickX ?? 0,
-                            y: rightController?.rightStickY ?? primaryController?.rightStickY ?? 0,
-                            color: .green
-                        )
-                    }
+            HStack(spacing: 13) {
+                inputHalf("LEFT", right: false, connected: leftController != nil) {
+                    StickIndicator(title: "Left Stick", x: leftController?.leftStickX ?? 0,
+                                   y: leftController?.leftStickY ?? 0, color: ArcTheme.left)
+                    dpad
                 }
-                .padding(28)
+                inputHalf("RIGHT", right: true, connected: rightController != nil) {
+                    faceButtons
+                    StickIndicator(title: "Right Stick", x: rightController?.rightStickX ?? 0,
+                                   y: rightController?.rightStickY ?? 0, color: ArcTheme.right)
+                }
             }
-            .frame(minHeight: 330)
-            .compatGlassPanel(cornerRadius: 8)
         }
+        .padding(16)
+        .arcPanel()
+    }
+
+    private func inputHalf<Content: View>(_ title: String, right: Bool, connected: Bool,
+                                           @ViewBuilder content: () -> Content) -> some View {
+        let tint = ArcTheme.side(right)
+        return VStack(spacing: 12) {
+            Text(title).font(.system(.caption, design: .monospaced, weight: .semibold))
+                .tracking(2)
+                .foregroundStyle(tint)
+            content()
+                .opacity(connected ? 1 : 0.45)
+        }
+        .padding(15)
+        .frame(maxWidth: .infinity)
+        .foregroundStyle(.white)
+        .background {
+            ZStack {
+                ArcTheme.ink
+                ArcGrid().opacity(0.28)
+            }
+        }
+        .clipShape(.rect(cornerRadius: 14))
+        .overlay { RoundedRectangle(cornerRadius: 14).strokeBorder(tint.opacity(0.38)) }
     }
 
     private var findControls: some View {
-        HStack(alignment: .center, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             Label(findStatusText, systemImage: "dot.radiowaves.left.and.right")
                 .font(.headline)
                 .foregroundColor(.primary)
 
-            Spacer()
-
+            HStack(spacing: 8) {
             Button {
                 daemonBridge.setFindJoyCon(left: true, right: false)
             } label: {
                 Label("Find Left", systemImage: "speaker.wave.2.fill")
             }
-            .compatGlassButton()
+            .buttonStyle(.bordered)
             .disabled(leftController == nil)
 
             Button {
@@ -140,7 +133,7 @@ struct GamepadView: View {
             } label: {
                 Label("Find Right", systemImage: "speaker.wave.2.fill")
             }
-            .compatGlassButton()
+            .buttonStyle(.bordered)
             .disabled(rightController == nil)
 
             Button {
@@ -148,7 +141,7 @@ struct GamepadView: View {
             } label: {
                 Label("Find Both", systemImage: "speaker.wave.3.fill")
             }
-            .compatGlassButton()
+            .buttonStyle(.bordered)
             .disabled(leftController == nil && rightController == nil)
 
             Button {
@@ -156,11 +149,13 @@ struct GamepadView: View {
             } label: {
                 Label("Stop", systemImage: "stop.fill")
             }
-            .compatGlassButton()
+            .buttonStyle(.bordered)
             .disabled(!daemonBridge.findingLeftJoyCon && !daemonBridge.findingRightJoyCon)
+            }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
-        .compatGlassPanel(cornerRadius: 10)
+        .arcPanel()
     }
 
     private var dpad: some View {
@@ -236,7 +231,7 @@ struct GamepadView: View {
             }
         }
         .padding(14)
-        .compatGlassPanel(cornerRadius: 8)
+        .arcPanel()
     }
 
     private func railBindingRow(_ source: RailButtonSource) -> some View {
@@ -263,14 +258,14 @@ struct GamepadView: View {
                 Label(captureSource == source ? "Listening" : "Bind",
                       systemImage: captureSource == source ? "record.circle" : "arrow.triangle.2.circlepath")
             }
-            .compatGlassButton()
+            .buttonStyle(.bordered)
 
             Button {
                 setBinding(.none, for: source)
             } label: {
                 Label("Clear", systemImage: "xmark")
             }
-            .compatGlassButton()
+            .buttonStyle(.bordered)
             .disabled(target == .none)
         }
         .padding(.vertical, 2)
@@ -291,7 +286,7 @@ struct GamepadView: View {
             }
         }
         .padding(14)
-        .compatGlassPanel(cornerRadius: 8)
+        .arcPanel()
     }
 
     private var connectionSummary: String {
@@ -512,7 +507,7 @@ private struct ShoulderGroup: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .compatGlassPanel(cornerRadius: 8)
+        .arcPanel()
     }
 }
 

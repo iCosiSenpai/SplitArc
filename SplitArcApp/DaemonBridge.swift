@@ -449,7 +449,15 @@ class DaemonBridge: ObservableObject {
     }
 
     @Published private(set) var connectedControllerCount = 0
-    @Published var nfcTags: [NFCTag] = []
+    @Published private(set) var nfcTags: [NFCTag] = []
+    @Published private(set) var nfcScanPhase: NFCScanPhase = .idle
+    private var nfcScanRequest: UUID?
+
+    enum NFCScanPhase: Equatable {
+        case idle, requesting, scanning, failed(String)
+
+        var isActive: Bool { self == .requesting || self == .scanning }
+    }
     @Published private(set) var agentPhase: AgentPhase = .stopped
 
     enum AgentPhase {
@@ -472,7 +480,7 @@ class DaemonBridge: ObservableObject {
     private var pendingOutput = Data()
     private var ingestGeneration: UInt64?
     // Per-controller rate limiter (accessed only on ingestQueue).
-    private var lastIngestTime: [String: Date] = [:]
+    private var lastIngestTime: [String: TimeInterval] = [:]
     private let controllerUpdateInterval: TimeInterval = 1.0 / 30.0
     private var shouldRestartAfterTermination = false
     private var daemonStreamHandle: FileHandle?
@@ -601,6 +609,8 @@ class DaemonBridge: ObservableObject {
         shouldRestartAfterTermination = false
         findingLeftJoyCon = false
         findingRightJoyCon = false
+        nfcScanPhase = .idle
+        nfcScanRequest = nil
         markControllersDisconnected(status: "daemonStopped")
         if restart { startDaemon() }
     }
@@ -673,8 +683,8 @@ class DaemonBridge: ObservableObject {
         let maybeState = line.contains("\"event\":\"state\"")
         if maybeState {
             let side = extractStateSide(in: line) ?? "left"
-            let now = Date()
-            if let last = lastIngestTime[side], now.timeIntervalSince(last) < controllerUpdateInterval {
+            let now = ProcessInfo.processInfo.systemUptime
+            if let last = lastIngestTime[side], now - last < controllerUpdateInterval {
                 if side == "right" { ingestPacketDropRight &+= 1 } else { ingestPacketDropLeft &+= 1 }
                 return
             }
@@ -702,6 +712,16 @@ class DaemonBridge: ObservableObject {
                 case "controlFile":
                     self.sendStoredRailBindings()
                     self.sendStoredMouseSettings()
+                case "nfcScanStarted":
+                    if self.nfcScanPhase == .requesting {
+                        self.nfcScanRequest = nil
+                        self.nfcScanPhase = .scanning
+                    }
+                case "nfcScanFailed":
+                    if self.nfcScanPhase.isActive {
+                        self.nfcScanRequest = nil
+                        self.nfcScanPhase = .failed(detail)
+                    }
                 default:
                     break
                 }
@@ -768,6 +788,7 @@ class DaemonBridge: ObservableObject {
                         readMessage: readMessage
                     )
                     self.nfcTags.insert(tag, at: 0)
+                    if self.nfcTags.count > 128 { self.nfcTags.removeLast() }
                 }
             }
         default:
@@ -1345,44 +1366,52 @@ class DaemonBridge: ObservableObject {
     /// the file at 10 Hz and applies each complete newline-terminated
     /// object exactly once, so ordering is preserved and partial writes
     /// aren't picked up until the newline is flushed.
-    private func sendControlCommand(_ payload: [String: Any]) {
+    @discardableResult
+    private func sendControlCommand(_ payload: [String: Any]) -> Bool {
         guard !stopRequested, let daemonControlPath else {
             TelemetryStore.shared.append("[control] daemon not running; dropping command")
-            return
+            return false
         }
         guard JSONSerialization.isValidJSONObject(payload),
               let data = try? JSONSerialization.data(withJSONObject: payload, options: []),
               var line = String(data: data, encoding: .utf8) else {
-            return
+            return false
         }
         line.append("\n")
-        guard let bytes = line.data(using: .utf8) else { return }
+        guard let bytes = line.data(using: .utf8) else { return false }
         do {
             let handle = try FileHandle(forWritingTo: daemonControlPath)
             defer { try? handle.close() }
             try handle.seekToEnd()
             try handle.write(contentsOf: bytes)
+            return true
         } catch {
             TelemetryStore.shared.append("[control] write failed: \(error.localizedDescription)")
+            return false
         }
     }
 
     func scanNFC() {
-        TelemetryStore.shared.append("NFC scan requested on the right Joy-Con.")
-        sendControlCommand(["cmd": "scanNFC"])
+        guard !nfcScanPhase.isActive else { return }
+        guard sendControlCommand(["cmd": "scanNFC"]) else {
+            nfcScanPhase = .failed("Bluetooth is unavailable.")
+            return
+        }
+        nfcScanPhase = .requesting
+        let request = UUID()
+        nfcScanRequest = request
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let self, self.nfcScanRequest == request else { return }
+            self.nfcScanRequest = nil
+            self.nfcScanPhase = .failed("The right controller did not confirm the scan.")
+            self.sendControlCommand(["cmd": "stopNFC"])
+        }
     }
 
     func stopNFC() {
-        TelemetryStore.shared.append("NFC scan stopped.")
+        nfcScanRequest = nil
+        nfcScanPhase = .idle
         sendControlCommand(["cmd": "stopNFC"])
-    }
-
-    func copyTelemetryToClipboard() {
-        TelemetryStore.shared.copyToClipboard()
-    }
-
-    func clearTelemetryView() {
-        TelemetryStore.shared.clear()
     }
 
     // Expose counters for diagnostic overlay.
@@ -1410,19 +1439,16 @@ class DaemonBridge: ObservableObject {
         guard FileManager.default.fileExists(atPath: extensionURL.path) else {
             let message = "The bundled virtual input driver is missing."
             driverInstallStatus = message
-            TelemetryStore.shared.updateDriverStatus(message)
             return
         }
 
         let initial = "Submitting driver activation request..."
         driverInstallStatus = initial
-        TelemetryStore.shared.updateDriverStatus(initial)
         TelemetryStore.shared.append("Activating DriverKit extension from \(extensionURL.path)")
 
         DriverExtensionInstaller.shared.activate { [weak self] status, shouldRestartDaemon in
             DispatchQueue.main.async {
                 self?.driverInstallStatus = status
-                TelemetryStore.shared.updateDriverStatus(status)
                 TelemetryStore.shared.append("[driver] \(status)")
                 if shouldRestartDaemon {
                     self?.restartDaemon()

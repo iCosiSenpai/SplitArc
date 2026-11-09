@@ -27,6 +27,6 @@ Set `CODE_SIGN_IDENTITY` to a Developer ID Application identity, `NOTARY_PROFILE
 
 ## Tests
 
-Run `scripts/test.sh` for the C++ decoder tests with AddressSanitizer and UndefinedBehaviorSanitizer and the Python motion tests. The [audit](docs/audit.md) records the verification scope and remaining hardware checks.
+Run `scripts/test.sh` for the C++ decoder tests with AddressSanitizer and UndefinedBehaviorSanitizer and the Python motion tests. The [backend audit](docs/audit-0.3.0.md) records the verification scope and remaining hardware checks.
 
 SplitArc is maintained by Alessio Cosi. It is an MIT-licensed fork of [JoyCon2Mac](https://github.com/OZORDI/JoyCon2Mac). See [LICENSE](LICENSE) for upstream copyright and credits.

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		025E1AD0B383815B63CB0014 /* DriverKitClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 10B0C347B82EDBF635598DB5 /* DriverKitClient.mm */; };
-		0B58E5D6EE4DC84A876AE3E9 /* LiquidGlassSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C9B8D8458616AE3989B6A /* LiquidGlassSupport.swift */; };
 		13D0CE2EC2DCB45D99165CF5 /* BLEManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 93367A37BB3E0AFF951EEB21 /* BLEManager.mm */; };
 		2046310414B51481E2D50F9D /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 797DEECDD448E59ECA3358E5 /* IOBluetooth.framework */; };
 		224DA9A95EDF1A8C934303F1 /* MouseEmitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = EFD9A4841AFEB618429962CC /* MouseEmitter.mm */; };
@@ -35,6 +34,7 @@
 		C71F001775E8B10C2DC08836 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514FB67FE50C5FE0A37DB4D3 /* Foundation.framework */; };
 		C802D7F12BF72B8FE7482C5F /* MouseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3154F0D661DBF6A5117F8 /* MouseView.swift */; };
 		F1EE6F7E3B5F82628DA05150 /* VirtualJoyConDriver.iig in Sources */ = {isa = PBXBuildFile; fileRef = 7372639208A13AC07CCE4BC4 /* VirtualJoyConDriver.iig */; };
+		F8814D7E1322BD3CBC636E2F /* WorkspaceTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675850C66DD5D4A6109F44A /* WorkspaceTheme.swift */; };
 		F97E974E118F059F34D4173B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DBD533007DCBD9417B9F60F /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -82,7 +82,6 @@
 
 /* Begin PBXFileReference section */
 		031C2FE9610B97D2D731871F /* VirtualJoyConDriver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VirtualJoyConDriver.cpp; sourceTree = "<group>"; };
-		039C9B8D8458616AE3989B6A /* LiquidGlassSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassSupport.swift; sourceTree = "<group>"; };
 		082E548CE943DBB93C495C71 /* DriverKitClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClient.h; sourceTree = "<group>"; };
 		10B0C347B82EDBF635598DB5 /* DriverKitClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DriverKitClient.mm; sourceTree = "<group>"; };
 		1A0EA05C3A9DC4C598BB6F0A /* VirtualJoyConMouseDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualJoyConMouseDevice.h; sourceTree = "<group>"; };
@@ -104,6 +103,7 @@
 		86F119B1C776BC8FB9F49E78 /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
 		93367A37BB3E0AFF951EEB21 /* BLEManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BLEManager.mm; sourceTree = "<group>"; };
 		94ECBB26BF41D765EF02BB51 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		A675850C66DD5D4A6109F44A /* WorkspaceTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceTheme.swift; sourceTree = "<group>"; };
 		A6B4CB47B81F0228336A1708 /* GyroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GyroView.swift; sourceTree = "<group>"; };
 		A96690F90B3BE2786A94391E /* ControllersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllersView.swift; sourceTree = "<group>"; };
 		B08E2BFB496FF9E562AAB3CF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -162,13 +162,13 @@
 				D931F42D6C4C5000CF73DA5F /* DriverExtensionInstaller.swift */,
 				2468E7C5101B8E78924C3AE1 /* GamepadView.swift */,
 				A6B4CB47B81F0228336A1708 /* GyroView.swift */,
-				039C9B8D8458616AE3989B6A /* LiquidGlassSupport.swift */,
 				D60CA9A2EFAD67C6DFF98E5F /* MainWindow.swift */,
 				FAA3154F0D661DBF6A5117F8 /* MouseView.swift */,
 				2231FB0F8CAE456037DB8662 /* NFCView.swift */,
 				B08E2BFB496FF9E562AAB3CF /* SettingsView.swift */,
 				81E266FE23514A0B72FEFF9B /* SplitArcApp.swift */,
 				3DB11A589890E37D4B4D9A53 /* TelemetryStore.swift */,
+				A675850C66DD5D4A6109F44A /* WorkspaceTheme.swift */,
 			);
 			path = SplitArcApp;
 			sourceTree = "<group>";
@@ -348,13 +348,13 @@
 				B5D0DF8BBA013ED45A1596CF /* DriverExtensionInstaller.swift in Sources */,
 				38E74B03439620B8F74748AB /* GamepadView.swift in Sources */,
 				86834F6DE2B5CC2E21473D15 /* GyroView.swift in Sources */,
-				0B58E5D6EE4DC84A876AE3E9 /* LiquidGlassSupport.swift in Sources */,
 				950416310A0889FDB885E545 /* MainWindow.swift in Sources */,
 				C802D7F12BF72B8FE7482C5F /* MouseView.swift in Sources */,
 				864664AA5CABB766E285B11E /* NFCView.swift in Sources */,
 				BBBCD0CAA2C747351C88B457 /* SettingsView.swift in Sources */,
 				BB7ADC5EF0496BB81FBFA625 /* SplitArcApp.swift in Sources */,
 				977EC92A62ED565CF7CD134C /* TelemetryStore.swift in Sources */,
+				F8814D7E1322BD3CBC636E2F /* WorkspaceTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +526,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 6KV8L8WQ9D;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -541,7 +541,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = NO;
@@ -589,7 +589,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 6KV8L8WQ9D;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -610,7 +610,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = NO;

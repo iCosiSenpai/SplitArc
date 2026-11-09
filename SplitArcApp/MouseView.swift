@@ -62,42 +62,35 @@ struct MouseView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+        ArcPage {
+            ArcHeading(index: "03 / Optical and gyro", title: "Pointer Studio",
+                       summary: "Use the optical sensor on a surface or aim in the air with the gyroscope.")
+            VStack(alignment: .leading, spacing: 14) {
                 header
-
-                Divider()
                 pointerMethodPicker
-
-                if pointerMethod == .optical || gyroOutputMode == .mouse {
-                    Divider()
-                    modePicker
-                }
-
-                Divider()
-                if pointerMethod == .optical {
-                    sourcePicker
-                } else {
-                    gyroAimingControls
-                }
-
-                Divider()
-                buttonMapping
-
-                Divider()
-                testArea
-
-                Spacer()
+                if pointerMethod == .optical || gyroOutputMode == .mouse { modePicker }
             }
-            .padding()
+            .padding(16)
+            .arcPanel()
+            Group {
+                if pointerMethod == .optical { sourcePicker } else { gyroAimingControls }
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .arcPanel()
+            buttonMapping
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .arcPanel()
+            testArea
+                .padding(16)
+                .arcPanel()
         }
     }
 
     private var header: some View {
         HStack {
-            Text("Mouse Configuration")
-                .font(.title)
-                .fontWeight(.bold)
+            ArcKicker(title: "Input setup")
 
             Spacer()
 

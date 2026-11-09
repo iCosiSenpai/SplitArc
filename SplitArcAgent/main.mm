@@ -47,6 +47,8 @@ struct ControllerState {
     uint8_t triggerL = 0;
     uint8_t triggerR = 0;
     uint32_t packetCount = 0;
+    uint32_t leftPacketCount = 0;
+    uint32_t rightPacketCount = 0;
     bool isLeftJoyCon = true;
     JoyConSide lastSide = JoyConSide::Left;
 };
@@ -221,22 +223,36 @@ static std::string jsonEscape(const char *value) {
             case '\n': output += "\\n"; break;
             case '\r': output += "\\r"; break;
             case '\t': output += "\\t"; break;
-            default: output += c; break;
+            default:
+                if (static_cast<unsigned char>(c) < 0x20) {
+                    char escaped[7];
+                    snprintf(escaped, sizeof(escaped), "\\u%04x", static_cast<unsigned char>(c));
+                    output += escaped;
+                } else {
+                    output += c;
+                }
+                break;
         }
     }
     return output;
 }
 
+static void emitDaemonEvent(const char *status, const char *detail);
 static bool postCurrentGamepad(JoyConSide side, uint32_t sideButtons, StickData sideStick);
 
 void onJoyConStatus(JoyConSide side, const char *status, const char *message, const char *name) {
     if (status && std::strcmp(status, "disconnected") == 0) {
+        if (side == JoyConSide::Right) {
+            emitDaemonEvent("nfcScanFailed", "The right Joy-Con disconnected.");
+        }
         [g_mouseEmitter controllerDidDisconnect:side];
         if (side == JoyConSide::Left) {
+            g_state.leftPacketCount = 0;
             g_state.leftButtons = 0;
             g_state.leftStick = {};
             g_state.triggerL = 0;
         } else {
+            g_state.rightPacketCount = 0;
             g_state.rightButtons = 0;
             g_state.rightStick = {};
             g_state.triggerR = 0;
@@ -661,12 +677,11 @@ static void applyControlCommand(NSDictionary *command) {
         if (![left isKindOfClass:[NSNumber class]] || ![right isKindOfClass:[NSNumber class]]) return;
         applyFindJoyConMode(left.boolValue, right.boolValue, "command");
     } else if ([cmd isEqualToString:@"scanNFC"]) {
-        if (!g_bleManager) {
-            emitDaemonEvent("nfc", "scan failed: BLE manager missing");
-            return;
+        if ([g_bleManager startNFCScanning]) {
+            emitDaemonEvent("nfcScanStarted", "The agent started the right Joy-Con scan sequence.");
+        } else {
+            emitDaemonEvent("nfcScanFailed", "Connect a ready right Joy-Con to scan for tags.");
         }
-        BOOL ok = [g_bleManager startNFCScanning];
-        emitDaemonEvent("nfc", ok ? "scan started" : "scan failed: right Joy-Con missing");
     } else if ([cmd isEqualToString:@"probeNFC"]) {
         if (!g_bleManager) {
             emitDaemonEvent("nfc", "probe failed: BLE manager missing");
@@ -895,7 +910,7 @@ static void printJSONState(const std::vector<uint8_t>& buffer, JoyConSide side, 
 
     const CFAbsoluteTime lastJSONTime = side == JoyConSide::Right
         ? g_lastJSONRightTime : g_lastJSONLeftTime;
-    const CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+    const CFAbsoluteTime now = NSProcessInfo.processInfo.systemUptime;
     if (lastJSONTime > 0 && now - lastJSONTime < kJSONStateIntervalSeconds) {
         return;
     }
@@ -938,7 +953,7 @@ static void printJSONState(const std::vector<uint8_t>& buffer, JoyConSide side, 
     out << "{"
         << "\"event\":\"state\","
         << "\"side\":\"" << sideName << "\","
-        << "\"packetCount\":" << g_state.packetCount << ","
+        << "\"packetCount\":" << (side == JoyConSide::Left ? g_state.leftPacketCount : g_state.rightPacketCount) << ","
         << "\"packetSize\":" << buffer.size() << ","
         << "\"buttons\":" << sideButtons << ","
         << "\"leftButtons\":" << g_state.leftButtons << ","
@@ -1082,6 +1097,11 @@ static bool postCurrentGamepad(JoyConSide side, uint32_t sideButtons, StickData 
 
 void onJoyConData(const std::vector<uint8_t>& buffer, JoyConSide side) {
     g_state.packetCount++;
+    if (side == JoyConSide::Left) {
+        g_state.leftPacketCount++;
+    } else {
+        g_state.rightPacketCount++;
+    }
     g_state.lastSide = side;
     g_state.isLeftJoyCon = (side == JoyConSide::Left);
     

@@ -13,9 +13,9 @@ struct SplitArcApp: App {
                 .environmentObject(bridge.controllerStore)
                 .frame(minWidth: 800, minHeight: 590)
         }
-        .defaultSize(width: 1080, height: 730)
+        .defaultSize(width: 1120, height: 775)
 
-        Window("SplitArc Diagnostics", id: "diagnostics") {
+        Window("SplitArc Event Console", id: "diagnostics") {
             LogsView()
                 .frame(minWidth: 540, minHeight: 370)
         }

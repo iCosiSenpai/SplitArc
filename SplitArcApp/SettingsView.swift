@@ -1,70 +1,55 @@
+import ServiceManagement
 import SwiftUI
 
-import ServiceManagement
-
 struct SettingsView: View {
-    @EnvironmentObject private var daemonBridge: DaemonBridge
+    @EnvironmentObject private var bridge: DaemonBridge
     @Environment(\.openWindow) private var openWindow
     @AppStorage("sdlOnlyMode") private var sdlOnlyMode = false
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var loginError: String?
 
     var body: some View {
-        Form {
-            Section("General") {
+        ArcPage {
+            ArcHeading(index: "06 / System", title: "Settings",
+                       summary: "Control startup, virtual input and diagnostics for this Mac.")
+            section("Startup", icon: "power") {
                 Toggle("Open SplitArc at login", isOn: $launchAtLogin)
-                    .onChange(of: launchAtLogin) { _, enabled in
-                        setLaunchAtLogin(enabled)
-                    }
+                    .onChange(of: launchAtLogin) { _, enabled in setLaunchAtLogin(enabled) }
             }
-
-            Section("Virtual Input") {
-                Toggle("SDL compatibility mode", isOn: $sdlOnlyMode)
-                    .onChange(of: sdlOnlyMode) { _, enabled in
-                        daemonBridge.setSDLOnlyMode(enabled)
-                    }
-                Text("Show a single DualSense-compatible gamepad to SDL and cloud gaming clients.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
+            section("Virtual input", icon: "puzzlepiece.extension") {
                 if DaemonBridge.canEnableDriver {
-                    SettingsActionRow(
-                        icon: "puzzlepiece.extension",
-                        title: "System gamepad and pointer",
-                        subtitle: "Enable the virtual input driver to send controller and pointer input to other apps.",
-                        buttonTitle: "Enable Driver",
-                        role: nil,
-                        action: daemonBridge.installAndLoadDriver
-                    )
-                } else {
-                    Label("Virtual input requires a DriverKit-provisioned build.", systemImage: "puzzlepiece.extension")
-                        .foregroundStyle(.secondary)
-                }
-
-                if !daemonBridge.driverInstallStatus.isEmpty {
-                    Text(daemonBridge.driverInstallStatus)
+                    Toggle("SDL compatibility mode", isOn: $sdlOnlyMode)
+                        .onChange(of: sdlOnlyMode) { _, enabled in bridge.setSDLOnlyMode(enabled) }
+                    Text("Use a single DualSense-compatible gamepad with SDL and cloud gaming clients.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                        .textSelection(.enabled)
+                    Button("Enable Driver", systemImage: "arrow.down.circle", action: bridge.installAndLoadDriver)
+                    if !bridge.driverInstallStatus.isEmpty {
+                        Text(bridge.driverInstallStatus)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                    }
+                } else {
+                    ArcBadge(title: "Bluetooth preview", symbol: "info.circle")
+                    Text("Gamepad and pointer output in other apps requires an Apple-provisioned DriverKit build.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
                 }
             }
-
-            Section("Diagnostics") {
-                Button("Open Diagnostics", systemImage: "waveform.path") {
-                    openWindow(id: "diagnostics")
+            section("Diagnostics", icon: "waveform.path.ecg") {
+                HStack {
+                    Button("Open Event Console", systemImage: "terminal") { openWindow(id: "diagnostics") }
+                    Button("Restart Bluetooth", systemImage: "arrow.clockwise", action: bridge.restartDaemon)
+                        .disabled(bridge.isAgentTransitioning)
                 }
-                Button("Restart Bluetooth Agent", systemImage: "arrow.clockwise",
-                       action: daemonBridge.restartDaemon)
-                    .disabled(daemonBridge.isAgentTransitioning)
             }
-
-            Section("About SplitArc") {
+            section("About SplitArc", icon: "info.circle") {
                 LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")
                 Link("Source code", destination: URL(string: "https://github.com/iCosiSenpai/SplitArc")!)
             }
         }
-        .formStyle(.grouped)
-        .frame(minWidth: 460, idealHeight: 510)
+        .frame(minWidth: 460, idealHeight: 570)
         .alert("Could not change login setting", isPresented: Binding(
             get: { loginError != nil },
             set: { if !$0 { loginError = nil } }
@@ -73,6 +58,19 @@ struct SettingsView: View {
         } message: {
             Text(loginError ?? "")
         }
+    }
+
+    private func section<Content: View>(_ title: String, icon: String,
+                                       @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label(title, systemImage: icon)
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+            content()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .arcPanel()
     }
 
     private func setLaunchAtLogin(_ enabled: Bool) {
@@ -91,90 +89,50 @@ struct SettingsView: View {
     }
 }
 
-struct SettingsActionRow: View {
-    let icon: String
-    let title: String
-    let subtitle: String
-    let buttonTitle: String
-    let role: ButtonRole?
-    let action: () -> Void
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 17, weight: .medium))
-                .foregroundColor(role == .destructive ? .red : .accentColor)
-                .frame(width: 28, height: 28)
-                .background(
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill((role == .destructive ? Color.red : Color.accentColor).opacity(0.12))
-                )
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.body)
-                Text(subtitle)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-
-            Spacer(minLength: 16)
-
-            Button(role: role, action: action) {
-                Text(buttonTitle)
-                    .frame(minWidth: 72)
-            }
-        }
-        .padding(.vertical, 4)
-    }
-}
-
 struct LogsView: View {
     @ObservedObject private var telemetry = TelemetryStore.shared
+    @State private var query = ""
+
+    private var visibleEntries: [TelemetryStore.Entry] {
+        guard !query.isEmpty else { return telemetry.entries }
+        return telemetry.entries.filter { $0.message.localizedCaseInsensitiveContains(query) }
+    }
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
+            ArcHeading(index: "UTILITY / SESSION", title: "Event Console",
+                       summary: "Recent Bluetooth, agent and driver events are kept in memory.")
+                .padding(20)
             HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("SplitArc Telemetry")
-                        .font(.headline)
-                    Text("Live, memory-only event history")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                Spacer()
-                Button("Copy") {
-                    telemetry.copyToClipboard()
-                }
-                Button("Clear") {
-                    telemetry.clear()
-                }
+                TextField("Filter events", text: $query)
+                    .textFieldStyle(.roundedBorder)
+                Button("Copy Events", systemImage: "doc.on.doc", action: telemetry.copyToClipboard)
+                    .disabled(telemetry.entries.isEmpty)
+                Button("Clear", systemImage: "trash", action: telemetry.clear)
+                    .disabled(telemetry.entries.isEmpty)
             }
-            .padding(12)
-
-            Divider()
-
-            ScrollView {
-                ScrollViewReader { proxy in
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text(telemetry.displayedOutput)
-                            .font(.system(.caption, design: .monospaced))
-                            .textSelection(.enabled)
-                            .padding()
-                            .id("bottom")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .onChange(of: telemetry.telemetryLineCount) {
-                        proxy.scrollTo("bottom", anchor: .bottom)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 14)
+            if visibleEntries.isEmpty {
+                ContentUnavailableView(query.isEmpty ? "No events yet" : "No matching events",
+                                       systemImage: query.isEmpty ? "waveform" : "magnifyingglass")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List {
+                    ForEach(visibleEntries.reversed()) { entry in
+                        HStack(alignment: .firstTextBaseline, spacing: 13) {
+                            Text(entry.time.formatted(date: .omitted, time: .standard))
+                                .foregroundStyle(.secondary)
+                                .frame(width: 90, alignment: .leading)
+                            Text(entry.message)
+                                .textSelection(.enabled)
+                        }
+                        .font(.system(.caption, design: .monospaced))
+                        .padding(.vertical, 3)
                     }
                 }
+                .listStyle(.inset)
             }
-            .background(Color(NSColor.textBackgroundColor))
         }
     }
-}
-
-#Preview {
-    SettingsView()
-        .environmentObject(DaemonBridge.shared)
 }
