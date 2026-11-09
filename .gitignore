@@ -13,7 +13,7 @@ cmake_install.cmake
 Makefile
 
 # Xcode
-*.xcodeproj
+# The shared SplitArc Xcode project is tracked.
 *.xcworkspace
 *.pbxuser
 *.mode1v3

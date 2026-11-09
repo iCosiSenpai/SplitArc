@@ -675,14 +675,14 @@ OSDictionary * VirtualJoyConGamepadDevice::newDeviceDescription() {
     OSNumber * version      = OSNumber::withNumber(static_cast<uint32_t>(1), 32);
     OSNumber * location     = OSNumber::withNumber(kVirtualLocationGamepad, 32);
     OSString * transport    = OSString::withCString("Virtual");
-    OSString * manufacturer = OSString::withCString("JoyCon2Mac");
+    OSString * manufacturer = OSString::withCString("SplitArc");
     OSString * productName  = OSString::withCString("Joy-Con 2 Gamepad (Virtual)");
-    OSString * serial       = OSString::withCString("JoyCon2Mac-Gamepad-01");
+    OSString * serial       = OSString::withCString("SplitArc-Gamepad-01");
 
-    if (vendor)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
-    if (product)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
-    if (version)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
-    if (location)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
+    if (vendor != nullptr)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
+    if (product != nullptr)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
+    if (version != nullptr)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
+    if (location != nullptr)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
     if (transport)    { description->setObject(kIOHIDTransportKey,      transport);    transport->release(); }
     if (manufacturer) { description->setObject(kIOHIDManufacturerKey,   manufacturer); manufacturer->release(); }
     if (productName)  { description->setObject(kIOHIDProductKey,        productName);  productName->release(); }
@@ -803,10 +803,10 @@ OSDictionary * VirtualJoyConDualSenseDevice::newDeviceDescription() {
     OSString * productName  = OSString::withCString("DualSense Wireless Controller");
     OSString * serial       = OSString::withCString("66:55:44:33:22:11");
 
-    if (vendor)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
-    if (product)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
-    if (version)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
-    if (location)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
+    if (vendor != nullptr)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
+    if (product != nullptr)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
+    if (version != nullptr)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
+    if (location != nullptr)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
     if (transport)    { description->setObject(kIOHIDTransportKey,      transport);    transport->release(); }
     if (manufacturer) { description->setObject(kIOHIDManufacturerKey,   manufacturer); manufacturer->release(); }
     if (productName)  { description->setObject(kIOHIDProductKey,        productName);  productName->release(); }
@@ -1014,14 +1014,14 @@ OSDictionary * VirtualJoyConMouseDevice::newDeviceDescription() {
     OSNumber * version      = OSNumber::withNumber(static_cast<uint32_t>(1), 32);
     OSNumber * location     = OSNumber::withNumber(kVirtualLocationMouse, 32);
     OSString * transport    = OSString::withCString("Bluetooth");
-    OSString * manufacturer = OSString::withCString("JoyCon2Mac");
-    OSString * productName  = OSString::withCString("JoyCon2Mac Bluetooth Mouse");
-    OSString * serial       = OSString::withCString("JoyCon2Mac-Mouse-01");
+    OSString * manufacturer = OSString::withCString("SplitArc");
+    OSString * productName  = OSString::withCString("SplitArc Bluetooth Mouse");
+    OSString * serial       = OSString::withCString("SplitArc-Mouse-01");
 
-    if (vendor)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
-    if (product)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
-    if (version)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
-    if (location)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
+    if (vendor != nullptr)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
+    if (product != nullptr)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
+    if (version != nullptr)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
+    if (location != nullptr)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
     if (transport)    { description->setObject(kIOHIDTransportKey,      transport);    transport->release(); }
     if (manufacturer) { description->setObject(kIOHIDManufacturerKey,   manufacturer); manufacturer->release(); }
     if (productName)  { description->setObject(kIOHIDProductKey,        productName);  productName->release(); }
@@ -1096,14 +1096,14 @@ OSDictionary * VirtualJoyConKeyboardDevice::newDeviceDescription() {
     OSNumber * version      = OSNumber::withNumber(static_cast<uint32_t>(1), 32);
     OSNumber * location     = OSNumber::withNumber(kVirtualLocationKeyboard, 32);
     OSString * transport    = OSString::withCString("Virtual");
-    OSString * manufacturer = OSString::withCString("JoyCon2Mac");
-    OSString * productName  = OSString::withCString("JoyCon2Mac Gesture Keyboard");
-    OSString * serial       = OSString::withCString("JoyCon2Mac-Keyboard-01");
+    OSString * manufacturer = OSString::withCString("SplitArc");
+    OSString * productName  = OSString::withCString("SplitArc Gesture Keyboard");
+    OSString * serial       = OSString::withCString("SplitArc-Keyboard-01");
 
-    if (vendor)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
-    if (product)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
-    if (version)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
-    if (location)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
+    if (vendor != nullptr)       { description->setObject(kIOHIDVendorIDKey,       vendor);       vendor->release(); }
+    if (product != nullptr)      { description->setObject(kIOHIDProductIDKey,      product);      product->release(); }
+    if (version != nullptr)      { description->setObject(kIOHIDVersionNumberKey,  version);      version->release(); }
+    if (location != nullptr)     { description->setObject(kIOHIDLocationIDKey,     location);     location->release(); }
     if (transport)    { description->setObject(kIOHIDTransportKey,      transport);    transport->release(); }
     if (manufacturer) { description->setObject(kIOHIDManufacturerKey,   manufacturer); manufacturer->release(); }
     if (productName)  { description->setObject(kIOHIDProductKey,        productName);  productName->release(); }

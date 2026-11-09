@@ -4,11 +4,7 @@
 <dict>
 	<key>com.apple.developer.driverkit</key>
 	<true/>
-	<key>com.apple.developer.driverkit.family.hid.device</key>
-	<true/>
-	<key>com.apple.developer.driverkit.transport.hid</key>
-	<true/>
-	<key>com.apple.developer.driverkit.allow-any-userclient-access</key>
+	<key>com.apple.developer.driverkit.family.hid.virtual.device</key>
 	<true/>
 </dict>
 </plist>

@@ -5,40 +5,79 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>VirtualJoyConDriver</string>
+	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.joycon2mac.VirtualJoyConDriver</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleIdentifierKernel</key>
+	<string>com.apple.kpi.iokit</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>VirtualJoyConDriver</string>
+	<string>dev.icosisenpai.splitarc.driver</string>
 	<key>CFBundlePackageType</key>
 	<string>DEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>OSBundleUsageDescription</key>
+	<string>SplitArc Virtual HID Driver — exposes paired Joy-Con 2 controllers as a system gamepad and mouse so games and macOS itself can use them as real HID devices.</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>VirtualJoyConDriver</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
-			<string>com.joycon2mac.VirtualJoyConDriver</string>
+			<string>dev.icosisenpai.splitarc.driver</string>
+			<key>CFBundleIdentifierKernel</key>
+			<string>com.apple.kpi.iokit</string>
 			<key>IOClass</key>
-			<string>IOUserHIDDevice</string>
+			<string>IOUserService</string>
+			<key>IOMatchCategory</key>
+			<string>VirtualJoyConDriver</string>
 			<key>IOProviderClass</key>
-			<string>IOUserHIDDevice</string>
+			<string>IOUserResources</string>
+			<key>IOResourceMatch</key>
+			<string>IOKit</string>
 			<key>IOUserClass</key>
 			<string>VirtualJoyConDriver</string>
-			<key>Transport</key>
-			<string>Virtual</string>
-			<key>VendorID</key>
-			<integer>1406</integer>
-			<key>ProductID</key>
-			<integer>8201</integer>
+			<key>IOUserServerName</key>
+			<string>dev.icosisenpai.splitarc.driver</string>
+			<key>UserClientProperties</key>
+			<dict>
+				<key>IOClass</key>
+				<string>IOUserUserClient</string>
+				<key>IOUserClass</key>
+				<string>VirtualJoyConUserClient</string>
+				<key>GamepadDeviceProperties</key>
+				<dict>
+					<key>IOClass</key>
+					<string>AppleUserHIDDevice</string>
+					<key>IOUserClass</key>
+					<string>VirtualJoyConGamepadDevice</string>
+				</dict>
+				<key>DualSenseDeviceProperties</key>
+				<dict>
+					<key>IOClass</key>
+					<string>AppleUserHIDDevice</string>
+					<key>IOUserClass</key>
+					<string>VirtualJoyConDualSenseDevice</string>
+				</dict>
+				<key>MouseDeviceProperties</key>
+				<dict>
+					<key>IOClass</key>
+					<string>AppleUserHIDDevice</string>
+					<key>IOUserClass</key>
+					<string>VirtualJoyConMouseDevice</string>
+				</dict>
+				<key>KeyboardDeviceProperties</key>
+				<dict>
+					<key>IOClass</key>
+					<string>AppleUserHIDDevice</string>
+					<key>IOUserClass</key>
+					<string>VirtualJoyConKeyboardDevice</string>
+				</dict>
+			</dict>
 		</dict>
 	</dict>
-	<key>OSBundleUsageDescription</key>
-	<string>Virtual Joy-Con HID Driver for macOS</string>
 </dict>
 </plist>

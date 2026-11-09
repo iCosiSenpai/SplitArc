@@ -1,0 +1,701 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		025E1AD0B383815B63CB0014 /* DriverKitClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 10B0C347B82EDBF635598DB5 /* DriverKitClient.mm */; };
+		0B58E5D6EE4DC84A876AE3E9 /* LiquidGlassSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039C9B8D8458616AE3989B6A /* LiquidGlassSupport.swift */; };
+		13D0CE2EC2DCB45D99165CF5 /* BLEManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 93367A37BB3E0AFF951EEB21 /* BLEManager.mm */; };
+		2046310414B51481E2D50F9D /* IOBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 797DEECDD448E59ECA3358E5 /* IOBluetooth.framework */; };
+		224DA9A95EDF1A8C934303F1 /* MouseEmitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = EFD9A4841AFEB618429962CC /* MouseEmitter.mm */; };
+		2B34B49C5B1FD756279773AD /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = DEE111CBC2498C597638FD8B /* main.mm */; };
+		2ED91FCC89964CD50CFE0E89 /* DaemonBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4937D3C1CD4A689678FEC5D3 /* DaemonBridge.swift */; };
+		38E74B03439620B8F74748AB /* GamepadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2468E7C5101B8E78924C3AE1 /* GamepadView.swift */; };
+		50A70A7E85B7CC6E8AE43E29 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94ECBB26BF41D765EF02BB51 /* CoreBluetooth.framework */; };
+		5A531E45AE0AFDB8D03528DA /* JoyConDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5D03BB32D30BBDD4DF79ABB /* JoyConDecoder.cpp */; };
+		69971C24A18FE1C9740D3E8F /* SplitArcAgent.app in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = 763601E38558ABE5EFF2616F /* SplitArcAgent.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		69C76DF4B3076F6D308FB19E /* PairingManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA457C6B1AF869C5428A1301 /* PairingManager.mm */; };
+		705C048AA113F19433D3D934 /* SplitArcDriver.dext in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = D5C2C796E8E5F4E670123F76 /* SplitArcDriver.dext */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		759F17EED193C181A856A232 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6ED2AF46F06D527D26CB59 /* ApplicationServices.framework */; };
+		864664AA5CABB766E285B11E /* NFCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2231FB0F8CAE456037DB8662 /* NFCView.swift */; };
+		86834F6DE2B5CC2E21473D15 /* GyroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B4CB47B81F0228336A1708 /* GyroView.swift */; };
+		8CADC47201C91A274C5DFA9E /* ControllersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96690F90B3BE2786A94391E /* ControllersView.swift */; };
+		950416310A0889FDB885E545 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60CA9A2EFAD67C6DFF98E5F /* MainWindow.swift */; };
+		977EC92A62ED565CF7CD134C /* TelemetryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB11A589890E37D4B4D9A53 /* TelemetryStore.swift */; };
+		9F53382C9B2B0207C538F19B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 86F119B1C776BC8FB9F49E78 /* LICENSE */; };
+		A3FBC6DA347A9314B8B68598 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3E22AAD55DB8FA7DA569D3 /* IOKit.framework */; };
+		B5D0DF8BBA013ED45A1596CF /* DriverExtensionInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D931F42D6C4C5000CF73DA5F /* DriverExtensionInstaller.swift */; };
+		BB7ADC5EF0496BB81FBFA625 /* SplitArcApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E266FE23514A0B72FEFF9B /* SplitArcApp.swift */; };
+		BBBCD0CAA2C747351C88B457 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08E2BFB496FF9E562AAB3CF /* SettingsView.swift */; };
+		C1086A905AA4478BEFEBEBD7 /* VirtualJoyConDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 031C2FE9610B97D2D731871F /* VirtualJoyConDriver.cpp */; };
+		C71F001775E8B10C2DC08836 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514FB67FE50C5FE0A37DB4D3 /* Foundation.framework */; };
+		C802D7F12BF72B8FE7482C5F /* MouseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3154F0D661DBF6A5117F8 /* MouseView.swift */; };
+		F1EE6F7E3B5F82628DA05150 /* VirtualJoyConDriver.iig in Sources */ = {isa = PBXBuildFile; fileRef = 7372639208A13AC07CCE4BC4 /* VirtualJoyConDriver.iig */; };
+		F97E974E118F059F34D4173B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DBD533007DCBD9417B9F60F /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9FCF96267CD74D7F3F3D8F73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B742123A4F1F0DF591F14DD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6A51BD4A67D9F0163A0E9B0A;
+			remoteInfo = SplitArcDriver;
+		};
+		A4AF4AE62A462BCEDDDD6E3E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B742123A4F1F0DF591F14DD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA28D60C9D2F30639E8D4A8B;
+			remoteInfo = SplitArcAgent;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7451B75367841EC07EFEF0CA /* Embed Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/SystemExtensions;
+			dstSubfolderSpec = 1;
+			files = (
+				705C048AA113F19433D3D934 /* SplitArcDriver.dext in Embed Dependencies */,
+			);
+			name = "Embed Dependencies";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85FFC1D3E92CAE5F259059A9 /* Embed Dependencies */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Helpers;
+			dstSubfolderSpec = 1;
+			files = (
+				69971C24A18FE1C9740D3E8F /* SplitArcAgent.app in Embed Dependencies */,
+			);
+			name = "Embed Dependencies";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		031C2FE9610B97D2D731871F /* VirtualJoyConDriver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VirtualJoyConDriver.cpp; sourceTree = "<group>"; };
+		039C9B8D8458616AE3989B6A /* LiquidGlassSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlassSupport.swift; sourceTree = "<group>"; };
+		082E548CE943DBB93C495C71 /* DriverKitClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DriverKitClient.h; sourceTree = "<group>"; };
+		10B0C347B82EDBF635598DB5 /* DriverKitClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DriverKitClient.mm; sourceTree = "<group>"; };
+		1A0EA05C3A9DC4C598BB6F0A /* VirtualJoyConMouseDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualJoyConMouseDevice.h; sourceTree = "<group>"; };
+		2231FB0F8CAE456037DB8662 /* NFCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFCView.swift; sourceTree = "<group>"; };
+		2468E7C5101B8E78924C3AE1 /* GamepadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamepadView.swift; sourceTree = "<group>"; };
+		2A9D9881E07C32003E97B2DE /* VirtualJoyConUserClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualJoyConUserClient.h; sourceTree = "<group>"; };
+		38A1C15A394B6DC458B07ED2 /* BLEManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEManager.h; sourceTree = "<group>"; };
+		3D0DC13E0165351C0F7DC0BF /* PairingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PairingManager.h; sourceTree = "<group>"; };
+		3DB11A589890E37D4B4D9A53 /* TelemetryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryStore.swift; sourceTree = "<group>"; };
+		4937D3C1CD4A689678FEC5D3 /* DaemonBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonBridge.swift; sourceTree = "<group>"; };
+		4BD9E8783D71594D4FDDE8C4 /* MouseEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MouseEmitter.h; sourceTree = "<group>"; };
+		4DBD533007DCBD9417B9F60F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		514FB67FE50C5FE0A37DB4D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6D7F6EEFED822BDA22934BB8 /* VirtualJoyConDualSenseDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualJoyConDualSenseDevice.h; sourceTree = "<group>"; };
+		7372639208A13AC07CCE4BC4 /* VirtualJoyConDriver.iig */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.iig; path = VirtualJoyConDriver.iig; sourceTree = "<group>"; };
+		763601E38558ABE5EFF2616F /* SplitArcAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitArcAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		797DEECDD448E59ECA3358E5 /* IOBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOBluetooth.framework; path = System/Library/Frameworks/IOBluetooth.framework; sourceTree = SDKROOT; };
+		81E266FE23514A0B72FEFF9B /* SplitArcApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitArcApp.swift; sourceTree = "<group>"; };
+		86F119B1C776BC8FB9F49E78 /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
+		93367A37BB3E0AFF951EEB21 /* BLEManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BLEManager.mm; sourceTree = "<group>"; };
+		94ECBB26BF41D765EF02BB51 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		A6B4CB47B81F0228336A1708 /* GyroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GyroView.swift; sourceTree = "<group>"; };
+		A96690F90B3BE2786A94391E /* ControllersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllersView.swift; sourceTree = "<group>"; };
+		B08E2BFB496FF9E562AAB3CF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B5D03BB32D30BBDD4DF79ABB /* JoyConDecoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JoyConDecoder.cpp; sourceTree = "<group>"; };
+		D2B0D0F994D0599484141148 /* VirtualJoyConKeyboardDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualJoyConKeyboardDevice.h; sourceTree = "<group>"; };
+		D5C2C796E8E5F4E670123F76 /* SplitArcDriver.dext */ = {isa = PBXFileReference; explicitFileType = "wrapper.driver-extension"; includeInIndex = 0; path = SplitArcDriver.dext; sourceTree = BUILT_PRODUCTS_DIR; };
+		D60CA9A2EFAD67C6DFF98E5F /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
+		D931F42D6C4C5000CF73DA5F /* DriverExtensionInstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverExtensionInstaller.swift; sourceTree = "<group>"; };
+		DEE111CBC2498C597638FD8B /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		EA457C6B1AF869C5428A1301 /* PairingManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PairingManager.mm; sourceTree = "<group>"; };
+		EFD9A4841AFEB618429962CC /* MouseEmitter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MouseEmitter.mm; sourceTree = "<group>"; };
+		F48BA0BA3F2D05E67E94599A /* VirtualJoyConGamepadDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualJoyConGamepadDevice.h; sourceTree = "<group>"; };
+		F5C7C77262A5DB49FD825120 /* SplitArc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SplitArc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAA3154F0D661DBF6A5117F8 /* MouseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseView.swift; sourceTree = "<group>"; };
+		FB8C146C53AFACA7A3B492AC /* JoyConDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoyConDecoder.h; sourceTree = "<group>"; };
+		FE6ED2AF46F06D527D26CB59 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		FF3E22AAD55DB8FA7DA569D3 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4C509F35E17AA8DBA30B412C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50A70A7E85B7CC6E8AE43E29 /* CoreBluetooth.framework in Frameworks */,
+				2046310414B51481E2D50F9D /* IOBluetooth.framework in Frameworks */,
+				A3FBC6DA347A9314B8B68598 /* IOKit.framework in Frameworks */,
+				759F17EED193C181A856A232 /* ApplicationServices.framework in Frameworks */,
+				C71F001775E8B10C2DC08836 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5042130942DAB894C3D61942 /* VirtualJoyConDriver */ = {
+			isa = PBXGroup;
+			children = (
+				031C2FE9610B97D2D731871F /* VirtualJoyConDriver.cpp */,
+				7372639208A13AC07CCE4BC4 /* VirtualJoyConDriver.iig */,
+				6D7F6EEFED822BDA22934BB8 /* VirtualJoyConDualSenseDevice.h */,
+				F48BA0BA3F2D05E67E94599A /* VirtualJoyConGamepadDevice.h */,
+				D2B0D0F994D0599484141148 /* VirtualJoyConKeyboardDevice.h */,
+				1A0EA05C3A9DC4C598BB6F0A /* VirtualJoyConMouseDevice.h */,
+				2A9D9881E07C32003E97B2DE /* VirtualJoyConUserClient.h */,
+			);
+			path = VirtualJoyConDriver;
+			sourceTree = "<group>";
+		};
+		505D2AA0486A9C48E330FD4C /* SplitArcApp */ = {
+			isa = PBXGroup;
+			children = (
+				4DBD533007DCBD9417B9F60F /* Assets.xcassets */,
+				A96690F90B3BE2786A94391E /* ControllersView.swift */,
+				4937D3C1CD4A689678FEC5D3 /* DaemonBridge.swift */,
+				D931F42D6C4C5000CF73DA5F /* DriverExtensionInstaller.swift */,
+				2468E7C5101B8E78924C3AE1 /* GamepadView.swift */,
+				A6B4CB47B81F0228336A1708 /* GyroView.swift */,
+				039C9B8D8458616AE3989B6A /* LiquidGlassSupport.swift */,
+				D60CA9A2EFAD67C6DFF98E5F /* MainWindow.swift */,
+				FAA3154F0D661DBF6A5117F8 /* MouseView.swift */,
+				2231FB0F8CAE456037DB8662 /* NFCView.swift */,
+				B08E2BFB496FF9E562AAB3CF /* SettingsView.swift */,
+				81E266FE23514A0B72FEFF9B /* SplitArcApp.swift */,
+				3DB11A589890E37D4B4D9A53 /* TelemetryStore.swift */,
+			);
+			path = SplitArcApp;
+			sourceTree = "<group>";
+		};
+		B4073FFB3C2EECB4CC00B620 = {
+			isa = PBXGroup;
+			children = (
+				86F119B1C776BC8FB9F49E78 /* LICENSE */,
+				E2BD35F55BC1474FD3F1AB0D /* SplitArcAgent */,
+				505D2AA0486A9C48E330FD4C /* SplitArcApp */,
+				5042130942DAB894C3D61942 /* VirtualJoyConDriver */,
+				F3BA33DB58608AFC6B6781D1 /* Frameworks */,
+				F4B69C10B8068963D0061521 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E2BD35F55BC1474FD3F1AB0D /* SplitArcAgent */ = {
+			isa = PBXGroup;
+			children = (
+				38A1C15A394B6DC458B07ED2 /* BLEManager.h */,
+				93367A37BB3E0AFF951EEB21 /* BLEManager.mm */,
+				082E548CE943DBB93C495C71 /* DriverKitClient.h */,
+				10B0C347B82EDBF635598DB5 /* DriverKitClient.mm */,
+				B5D03BB32D30BBDD4DF79ABB /* JoyConDecoder.cpp */,
+				FB8C146C53AFACA7A3B492AC /* JoyConDecoder.h */,
+				DEE111CBC2498C597638FD8B /* main.mm */,
+				4BD9E8783D71594D4FDDE8C4 /* MouseEmitter.h */,
+				EFD9A4841AFEB618429962CC /* MouseEmitter.mm */,
+				3D0DC13E0165351C0F7DC0BF /* PairingManager.h */,
+				EA457C6B1AF869C5428A1301 /* PairingManager.mm */,
+			);
+			path = SplitArcAgent;
+			sourceTree = "<group>";
+		};
+		F3BA33DB58608AFC6B6781D1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE6ED2AF46F06D527D26CB59 /* ApplicationServices.framework */,
+				94ECBB26BF41D765EF02BB51 /* CoreBluetooth.framework */,
+				514FB67FE50C5FE0A37DB4D3 /* Foundation.framework */,
+				797DEECDD448E59ECA3358E5 /* IOBluetooth.framework */,
+				FF3E22AAD55DB8FA7DA569D3 /* IOKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4B69C10B8068963D0061521 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F5C7C77262A5DB49FD825120 /* SplitArc.app */,
+				763601E38558ABE5EFF2616F /* SplitArcAgent.app */,
+				D5C2C796E8E5F4E670123F76 /* SplitArcDriver.dext */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		65871405F0A8F252903E61EE /* SplitArc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BAC186ED6906898EDA23C65E /* Build configuration list for PBXNativeTarget "SplitArc" */;
+			buildPhases = (
+				05DC11257F1BEA57684DE2B6 /* Sources */,
+				1E484D0297A47FF7ED646EE1 /* Resources */,
+				85FFC1D3E92CAE5F259059A9 /* Embed Dependencies */,
+				7451B75367841EC07EFEF0CA /* Embed Dependencies */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D74E4EF5263DE70F3FF8A964 /* PBXTargetDependency */,
+				FE4202EAF61CBA1EAC9C95AA /* PBXTargetDependency */,
+			);
+			name = SplitArc;
+			packageProductDependencies = (
+			);
+			productName = SplitArc;
+			productReference = F5C7C77262A5DB49FD825120 /* SplitArc.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6A51BD4A67D9F0163A0E9B0A /* SplitArcDriver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DEAB963BEC40A2C8598E7BD /* Build configuration list for PBXNativeTarget "SplitArcDriver" */;
+			buildPhases = (
+				768340A6AAD5FAD1DC67C464 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SplitArcDriver;
+			packageProductDependencies = (
+			);
+			productName = SplitArcDriver;
+			productReference = D5C2C796E8E5F4E670123F76 /* SplitArcDriver.dext */;
+			productType = "com.apple.product-type.driver-extension";
+		};
+		DA28D60C9D2F30639E8D4A8B /* SplitArcAgent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2698FA426BFC426D0C18DFE5 /* Build configuration list for PBXNativeTarget "SplitArcAgent" */;
+			buildPhases = (
+				C5C4DF8F40943D22065E0FE0 /* Sources */,
+				4C509F35E17AA8DBA30B412C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SplitArcAgent;
+			packageProductDependencies = (
+			);
+			productName = SplitArcAgent;
+			productReference = 763601E38558ABE5EFF2616F /* SplitArcAgent.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B742123A4F1F0DF591F14DD7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					65871405F0A8F252903E61EE = {
+						DevelopmentTeam = 6KV8L8WQ9D;
+					};
+					6A51BD4A67D9F0163A0E9B0A = {
+						DevelopmentTeam = 6KV8L8WQ9D;
+					};
+					DA28D60C9D2F30639E8D4A8B = {
+						DevelopmentTeam = 6KV8L8WQ9D;
+					};
+				};
+			};
+			buildConfigurationList = 9F6DAD3C59755A7EA9E30DC0 /* Build configuration list for PBXProject "SplitArc" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B4073FFB3C2EECB4CC00B620;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F4B69C10B8068963D0061521 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				65871405F0A8F252903E61EE /* SplitArc */,
+				DA28D60C9D2F30639E8D4A8B /* SplitArcAgent */,
+				6A51BD4A67D9F0163A0E9B0A /* SplitArcDriver */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1E484D0297A47FF7ED646EE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F97E974E118F059F34D4173B /* Assets.xcassets in Resources */,
+				9F53382C9B2B0207C538F19B /* LICENSE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		05DC11257F1BEA57684DE2B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CADC47201C91A274C5DFA9E /* ControllersView.swift in Sources */,
+				2ED91FCC89964CD50CFE0E89 /* DaemonBridge.swift in Sources */,
+				B5D0DF8BBA013ED45A1596CF /* DriverExtensionInstaller.swift in Sources */,
+				38E74B03439620B8F74748AB /* GamepadView.swift in Sources */,
+				86834F6DE2B5CC2E21473D15 /* GyroView.swift in Sources */,
+				0B58E5D6EE4DC84A876AE3E9 /* LiquidGlassSupport.swift in Sources */,
+				950416310A0889FDB885E545 /* MainWindow.swift in Sources */,
+				C802D7F12BF72B8FE7482C5F /* MouseView.swift in Sources */,
+				864664AA5CABB766E285B11E /* NFCView.swift in Sources */,
+				BBBCD0CAA2C747351C88B457 /* SettingsView.swift in Sources */,
+				BB7ADC5EF0496BB81FBFA625 /* SplitArcApp.swift in Sources */,
+				977EC92A62ED565CF7CD134C /* TelemetryStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		768340A6AAD5FAD1DC67C464 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1086A905AA4478BEFEBEBD7 /* VirtualJoyConDriver.cpp in Sources */,
+				F1EE6F7E3B5F82628DA05150 /* VirtualJoyConDriver.iig in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5C4DF8F40943D22065E0FE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13D0CE2EC2DCB45D99165CF5 /* BLEManager.mm in Sources */,
+				025E1AD0B383815B63CB0014 /* DriverKitClient.mm in Sources */,
+				5A531E45AE0AFDB8D03528DA /* JoyConDecoder.cpp in Sources */,
+				224DA9A95EDF1A8C934303F1 /* MouseEmitter.mm in Sources */,
+				69C76DF4B3076F6D308FB19E /* PairingManager.mm in Sources */,
+				2B34B49C5B1FD756279773AD /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D74E4EF5263DE70F3FF8A964 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA28D60C9D2F30639E8D4A8B /* SplitArcAgent */;
+			targetProxy = A4AF4AE62A462BCEDDDD6E3E /* PBXContainerItemProxy */;
+		};
+		FE4202EAF61CBA1EAC9C95AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6A51BD4A67D9F0163A0E9B0A /* SplitArcDriver */;
+			targetProxy = 9FCF96267CD74D7F3F3D8F73 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0DA6961199E170F99E76FABE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SplitArcApp/SplitArc.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SplitArcApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icosisenpai.splitarc;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		7E45F9477983AA80F2BB74D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = VirtualJoyConDriver/VirtualJoyConDriver.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				DRIVERKIT_DEPLOYMENT_TARGET = 25.0;
+				HEADER_SEARCH_PATHS = (
+					"$(DERIVED_SOURCES_DIR)/$(PRODUCT_BUNDLE_IDENTIFIER)",
+					"$(SRCROOT)/VirtualJoyConDriver",
+				);
+				INFOPLIST_FILE = VirtualJoyConDriver/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					DriverKit,
+					"-framework",
+					HIDDriverKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icosisenpai.splitarc.driver;
+				PRODUCT_NAME = "$(PRODUCT_BUNDLE_IDENTIFIER)";
+				SDKROOT = driverkit;
+				SHALLOW_BUNDLE = NO;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = driverkit;
+			};
+			name = Release;
+		};
+		92B81DD79164CC435CF62841 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SplitArcApp/SplitArc.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SplitArcApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icosisenpai.splitarc;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A24FB2EE44DFA710B6DAEE30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = VirtualJoyConDriver/VirtualJoyConDriver.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				DRIVERKIT_DEPLOYMENT_TARGET = 25.0;
+				HEADER_SEARCH_PATHS = (
+					"$(DERIVED_SOURCES_DIR)/$(PRODUCT_BUNDLE_IDENTIFIER)",
+					"$(SRCROOT)/VirtualJoyConDriver",
+				);
+				INFOPLIST_FILE = VirtualJoyConDriver/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					DriverKit,
+					"-framework",
+					HIDDriverKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icosisenpai.splitarc.driver;
+				PRODUCT_NAME = "$(PRODUCT_BUNDLE_IDENTIFIER)";
+				SDKROOT = driverkit;
+				SHALLOW_BUNDLE = NO;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = driverkit;
+			};
+			name = Debug;
+		};
+		C538D0F390DD9CCA32AECBB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6KV8L8WQ9D;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.2.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D2246DC8D1F947F445B4518E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6KV8L8WQ9D;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D819E7C8CF906C4CE14F9BFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SplitArcAgent/SplitArcAgent.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SplitArcAgent/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icosisenpai.splitarc.agent;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F5CDF5CF9CBE8AA562BCD7ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SplitArcAgent/SplitArcAgent.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SplitArcAgent/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.icosisenpai.splitarc.agent;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2698FA426BFC426D0C18DFE5 /* Build configuration list for PBXNativeTarget "SplitArcAgent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5CDF5CF9CBE8AA562BCD7ED /* Debug */,
+				D819E7C8CF906C4CE14F9BFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3DEAB963BEC40A2C8598E7BD /* Build configuration list for PBXNativeTarget "SplitArcDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A24FB2EE44DFA710B6DAEE30 /* Debug */,
+				7E45F9477983AA80F2BB74D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9F6DAD3C59755A7EA9E30DC0 /* Build configuration list for PBXProject "SplitArc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2246DC8D1F947F445B4518E /* Debug */,
+				C538D0F390DD9CCA32AECBB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BAC186ED6906898EDA23C65E /* Build configuration list for PBXNativeTarget "SplitArc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92B81DD79164CC435CF62841 /* Debug */,
+				0DA6961199E170F99E76FABE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B742123A4F1F0DF591F14DD7 /* Project object */;
+}

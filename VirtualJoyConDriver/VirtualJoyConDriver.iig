@@ -105,7 +105,7 @@ public:
 // Virtual DualSense HID Device (created dynamically from the UserClient)
 // ---------------------------------------------------------------------------
 //
-// Exposes a second, Sony-shaped gamepad while leaving the generic JoyCon2Mac
+// Exposes a second, Sony-shaped gamepad while leaving the generic SplitArc
 // gamepad untouched for Chrome's raw Gamepad API path.
 class VirtualJoyConDualSenseDevice : public IOUserHIDDevice
 {

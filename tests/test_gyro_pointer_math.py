@@ -626,7 +626,7 @@ class GyroPointerMathTests(unittest.TestCase):
         self.assertFalse(activation.update(set()))
 
     def test_activation_buttons_are_not_removed_from_gamepad_reports(self):
-        source = (Path(__file__).parents[1] / "JoyCon2Mac" / "main.mm").read_text()
+        source = (Path(__file__).parents[1] / "SplitArcAgent" / "main.mm").read_text()
         self.assertNotIn("g_gyroConsumed", source)
         self.assertNotIn("gyroConsumedMask", source)
 
